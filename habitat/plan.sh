@@ -7,7 +7,7 @@ pkg_license=('MIT')
 pkg_source="http://some_source_url/releases/${pkg_name}-${pkg_version}.tar.gz"
 # pkg_filename="${pkg_name}-${pkg_version}.tar.gz"
 pkg_shasum="TODO"
-pkg_deps=(core/coreutils core/bash core/findutils core/file)
+pkg_deps=(core/coreutils core/bash core/findutils core/file core/grep core/binutils)
 pkg_build_deps=()
 pkg_bin_dirs=(bin)
 
@@ -37,7 +37,7 @@ do_check() {
 
 do_install() {
   cp -a /src/bin /src/lib $pkg_prefix/
-  fix_interpreter "${pkg_prefix}/bin/slimshady" core/coreutils bin/env
+  fix_interpreter "${pkg_prefix}/bin/slimshady" core/bash bin/bash
 }
 
 do_strip() {

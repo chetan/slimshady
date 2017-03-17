@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # slim shaaaady
 
@@ -42,6 +42,22 @@ do_slim() {
 
   do_generic
   do_pkgs
+}
+
+fix_hab_path() {
+  local p pp SLIM_PATH
+
+  # make sure only our deps are in the PATH (if running under hab env)
+  if [[ -f $SLIM_ROOT/TDEPS ]]; then
+    SLIM_PATH=""
+    for p in $(cat $SLIM_ROOT/TDEPS); do
+      pp="$(hab pkg path $p)/PATH"
+      if [[ -f pp ]]; then
+        SLIM_PATH="$(cat $pp):$SLIM_PATH"
+      fi
+    done
+    PATH=$SLIM_PATH
+  fi
 }
 
 if command -v perl >/dev/null; then
