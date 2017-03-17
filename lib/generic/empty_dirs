@@ -1,0 +1,8 @@
+#!/bin/bash
+
+do_empty_dirs() {
+  local dir=$(use_dir $1)
+  echo "* rm empty dirs"
+
+  find $dir -depth -type d -empty -delete
+}

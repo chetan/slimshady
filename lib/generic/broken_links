@@ -1,0 +1,14 @@
+#!/bin/bash
+
+do_broken_links() {
+  local dir=$(use_dir $1)
+  echo "* rm broken links"
+
+  find $dir -type l -print0 2> /dev/null \
+    | while read -rd '' f; do
+      case "$(file -b "$f")" in
+        broken*) rm -f "$f";;
+        *) continue;;
+      esac
+    done
+}

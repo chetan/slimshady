@@ -1,0 +1,17 @@
+#!/bin/bash
+
+do_strip() {
+  local dir=$(use_dir $1)
+  echo "* strip binaries"
+
+  find $dir -type f -perm -u+w -print0 2> /dev/null \
+    | while read -rd '' f; do
+      (echo $f | egrep '\.(sh|js|ejs|sqlite|md|markdown|json|yml|xml|svg|png|gif|jpg|css|html|htm|npmignore|keep|txt|h|cc|py)$' >/dev/null) && continue
+      case "$(file -bi "$f")" in
+        *application/x-executable*) strip --strip-all "$f";;
+        *application/x-sharedlib*) strip --strip-unneeded --strip-debug "$f";;
+        *application/x-archive*) strip --strip-debug "$f";;
+        *) continue;;
+      esac
+    done
+}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+do_include() {
+  local dir=$(use_dir $1)
+  echo "* rm includes (*.h)"
+
+  find $dir/*/*/*/*/include -type f -name '*.h' -delete
+}

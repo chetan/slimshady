@@ -1,0 +1,8 @@
+#!/bin/bash
+
+do_static_libs() {
+  local dir=$(use_dir $1)
+  echo "* rm static libs (*.a)"
+
+  find $dir -type f -name 'lib*.a' -delete
+}

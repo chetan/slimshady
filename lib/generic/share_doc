@@ -1,0 +1,10 @@
+#!/bin/bash
+
+do_share_doc() {
+  local dir=$(use_dir $1)
+  echo "* rm -rf share/(doc|man|info)"
+
+  rm -rf $dir/*/*/*/*/share/doc
+  rm -rf $dir/*/*/*/*/share/man
+  rm -rf $dir/*/*/*/*/share/info
+}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+do_share_locale() {
+  local dir=$(use_dir $1)
+  echo "* rm -rf share/locale"
+
+  rm -rf $dir/*/*/*/*/share/locale
+}

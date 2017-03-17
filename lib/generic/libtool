@@ -1,0 +1,14 @@
+#!/bin/bash
+
+do_libtool() {
+  local dir=$(use_dir $1)
+  echo "* rm libtool configs (*.la)"
+
+  find $dir -type f -name '*.la' -print0 2> /dev/null \
+    | while read -rd '' f; do
+      case "$(file -b "$f")" in
+        libtool*) rm -f "$f";;
+        *) continue;;
+      esac
+    done
+}

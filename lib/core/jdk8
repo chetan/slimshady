@@ -1,0 +1,21 @@
+#!/bin/bash
+
+do_jdk8() {
+  local dir=$(use_dir $1)
+  echo "* slim core/jdk8"
+
+  if [[ ! -d $dir/core/jdk8 ]]; then
+    return 0
+  fi
+
+  rm -rf $dir/core/jdk8/*/*/db # apache derby ???
+  rm -rf $dir/core/jdk8/*/*/jre/lib/locale
+  rm -rf $dir/core/jdk8/*/*/man
+  rm -rf $dir/core/jdk8/*/*/lib/missioncontrol
+  rm -rf $dir/core/jdk8/*/*/lib/visualvm
+  rm -rf $dir/core/jdk8/*/*/javafx-src.zip
+  rm -rf $dir/core/jdk8/*/*/src.zip
+  find $dir/core/jdk8/*/*/ -type f -name '*.bat' -delete
+}
+
+do_jdk8
