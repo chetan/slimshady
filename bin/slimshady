@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # slim shaaaady
 
@@ -49,5 +49,6 @@ if command -v perl >/dev/null; then
 else
   SLIM_ROOT=$(dirname "$(readlink -f $0)")
 fi
+SLIM_ROOT=$(readlink -f "$SLIM_ROOT/..")
 
 do_slim
