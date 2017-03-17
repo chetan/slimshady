@@ -52,7 +52,7 @@ fix_hab_path() {
     SLIM_PATH=""
     for p in $(cat $SLIM_ROOT/TDEPS); do
       pp="$(hab pkg path $p)/PATH"
-      if [[ -f pp ]]; then
+      if [[ -f $pp ]]; then
         SLIM_PATH="$(cat $pp):$SLIM_PATH"
       fi
     done
