@@ -18,13 +18,15 @@ do_generic() {
     source $f
   done
 
-  # do_strip
-  # do_libtool
-  # do_static_libs
+  do_strip
+  do_libtool
+  do_static_libs
   do_share_doc
   do_share_locale
   do_include
-  # do_broken_links
+
+  # do these last as a final cleanup
+  do_broken_links
   do_empty_dirs
 }
 
