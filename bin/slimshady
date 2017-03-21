@@ -1,6 +1,30 @@
-#!/bin/bash
+#!/hab/pkgs/core/bash/4.3.42/20161213234235/bin/bash
 
 # slim shaaaady
+
+# If the variable `$DEBUG` is set, then print the shell commands as we execute.
+if [ -n "${DEBUG:-}" ]; then
+  set -x
+  export DEBUG
+fi
+
+parse_opts() {
+  while test $# -gt 0; do
+    case "$1" in
+      # -h|--help)
+      #   print_help
+      #   exit
+      #   ;;
+      --uninstall)
+        uninstall_slimshady
+        exit 0
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+}
 
 use_dir() {
   local dir="$1"
@@ -47,17 +71,46 @@ do_slim() {
 fix_hab_path() {
   local p pp SLIM_PATH
 
+  if command -v hab >/dev/null; then
+    hab=$(command -v hab)
+  else
+    hab="/hab/bin/hab"
+  fi
+
   # make sure only our deps are in the PATH (if running under hab env)
   if [[ -f $SLIM_ROOT/TDEPS ]]; then
     SLIM_PATH=""
     for p in $(cat $SLIM_ROOT/TDEPS); do
-      pp="$(hab pkg path $p)/PATH"
-      if [[ -f $pp ]]; then
-        SLIM_PATH="$(cat $pp):$SLIM_PATH"
+      pp="$($hab pkg path $p)/PATH"
+      if [[ -f $pp ]]; then SLIM_PATH="$(cat $pp):$SLIM_PATH"
       fi
     done
+    OLD_PATH=$PATH
     PATH=$SLIM_PATH
   fi
+}
+
+uninstall_slimshady() {
+  local dir=$(use_dir $1)
+  if [[ -z "$DEPS_OLD" && -f /tmp/.slim_shady_deps ]]; then
+    DEPS_OLD=$(cat /tmp/.slim_shady_deps)
+  fi
+  if [[ -z "$DEPS_OLD" ]]; then
+    return 0
+  fi
+
+  # remove all deps NOT in DEPS_OLD
+  # PATH=$OLD_PATH
+  PATH="$($hab pkg path core/busybox-static)/bin"
+  local p
+  for p in $(ls $dir/core); do
+    echo $DEPS_OLD | grep $p >/dev/null
+    ret=$?
+    if [[ $ret -ne 0 ]]; then
+      echo "* removing slimshady dep $p"
+      rm -rf $dir/core/$p
+    fi
+  done
 }
 
 if command -v perl >/dev/null; then
@@ -68,4 +121,5 @@ fi
 SLIM_ROOT=$(readlink -f "$SLIM_ROOT/..")
 
 fix_hab_path
+parse_opts $@
 do_slim
