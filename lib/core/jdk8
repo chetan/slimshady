@@ -13,9 +13,13 @@ do_jdk8() {
   rm -rf $dir/core/jdk8/*/*/man
   rm -rf $dir/core/jdk8/*/*/lib/missioncontrol
   rm -rf $dir/core/jdk8/*/*/lib/visualvm
-  rm -rf $dir/core/jdk8/*/*/javafx-src.zip
-  rm -rf $dir/core/jdk8/*/*/src.zip
+  rm -f $dir/core/jdk8/*/*/javafx-src.zip
+  rm -f $dir/core/jdk8/*/*/src.zip
   find $dir/core/jdk8/*/*/ -type f -name '*.bat' -delete
+
+  # if we want to be more agressive, we could also remove javafx when not being
+  # used. but it is shipped by default with newer JDK releases.
+  # rm -f jre/lib/amd64/libjfxwebkit.so # embedded webkit??
 }
 
 do_jdk8
