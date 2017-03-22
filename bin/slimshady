@@ -37,17 +37,28 @@ use_dir() {
   echo $dir
 }
 
+is_slimmed() {
+  local pkg d
+  pkg="$1"
+  for d in $pkg/*/*/; do
+    if [ -f "$d/.slim" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 do_generic() {
   for f in $SLIM_ROOT/lib/generic/*; do
     source $f
   done
 
-  do_strip
   do_libtool
   do_static_libs
   do_share_doc
   do_share_locale
   do_include
+  do_strip
 
   # do these last as a final cleanup
   do_broken_links
@@ -60,12 +71,22 @@ do_pkgs() {
   done
 }
 
+do_mark_completed() {
+  local dir=$(use_dir $1)
+  local d
+  # e.g., $dir/core/bash/ver/rel
+  for d in $dir/*/*/*/*; do
+    touch $d/.slim
+  done
+}
+
 do_slim() {
   local dir=$(use_dir $1)
   SLIM_TARGET="$dir"
 
   do_generic
   do_pkgs
+  do_mark_completed
 }
 
 fix_hab_path() {
