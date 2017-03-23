@@ -1,0 +1,8 @@
+#!/bin/bash
+
+do_pkgconfig() {
+  local dir=$(use_dir $1)
+  echo "* rm pkgconfig (*.pc)"
+
+  find $dir/*/*/*/*/lib/pkgconfig -type f -name '*.pc' -delete
+}

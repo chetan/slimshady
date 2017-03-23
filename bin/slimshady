@@ -84,8 +84,8 @@ do_slim() {
   local dir=$(use_dir $1)
   SLIM_TARGET="$dir"
 
-  do_generic
   do_pkgs
+  do_generic
   do_mark_completed
 }
 

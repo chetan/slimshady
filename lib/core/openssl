@@ -1,0 +1,14 @@
+#!/bin/bash
+
+do_openssl() {
+  local dir=$(use_dir $1)
+  echo "* slim core/openssl"
+
+  if [[ ! -d $dir/core/openssl ]]; then
+    return 0
+  fi
+
+  rm -rf $dir/core/openssl/*/*/ssl/man
+}
+
+do_openssl
