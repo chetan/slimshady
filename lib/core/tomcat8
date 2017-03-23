@@ -1,0 +1,15 @@
+#!/bin/bash
+
+do_tomcat8() {
+  local dir=$(use_dir $1)
+  echo "* slim core/tomcat8"
+
+  if [[ ! -d $dir/core/tomcat8 ]]; then
+    return 0
+  fi
+
+  rm -rf $dir/core/tomcat8/*/*/tc/webapps/docs/
+  rm -rf $dir/core/tomcat8/*/*/tc/webapps/examples/
+}
+
+do_tomcat8
