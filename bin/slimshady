@@ -58,6 +58,7 @@ do_generic() {
   do_share_doc
   do_share_locale
   do_include
+  do_pkgconfig
   do_strip
 
   # do these last as a final cleanup
